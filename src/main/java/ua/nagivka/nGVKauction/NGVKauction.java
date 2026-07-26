@@ -1,17 +1,20 @@
 package ua.nagivka.nGVKauction;
 
 import net.md_5.bungee.api.ChatColor;
-import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 import ua.nagivka.nGVKauction.commands.AuctionCommand;
+import ua.nagivka.nGVKauction.config.ConfigMigrator;
+import ua.nagivka.nGVKauction.database.DatabaseManager;
 import ua.nagivka.nGVKauction.listeners.GUIListener;
 import ua.nagivka.nGVKauction.managers.AuctionManager;
-import ua.nagivka.nGVKauction.menus.AuctionGUI;
+import ua.nagivka.nGVKauction.managers.EconomyManager;
+import ua.nagivka.nGVKauction.managers.LogManager;
 
 import java.io.File;
 import java.util.regex.Matcher;
@@ -19,26 +22,40 @@ import java.util.regex.Pattern;
 
 public final class NGVKauction extends JavaPlugin {
 
-    private AuctionManager auctionManager;
-    private Economy econ = null;
+    private static final Pattern HEX_PATTERN = Pattern.compile("&#([A-Fa-f0-9]{6})");
 
-    private File messagesFile;
-    private FileConfiguration messagesConfig;
+    private DatabaseManager databaseManager;
+    private EconomyManager economyManager;
+    private LogManager logManager;
+    private AuctionManager auctionManager;
+
+    private File langFile;
+    private FileConfiguration langConfig;
     private File guisFile;
     private FileConfiguration guisConfig;
+    private BukkitTask expirationTask;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        ConfigMigrator.migrateConfigs(this);
         createCustomConfigs();
 
-        if (!setupEconomy()) {
+        this.economyManager = new EconomyManager(this);
+        if (!this.economyManager.hasValidEconomy()) {
+            getLogger().severe("Vault или подходящий плагин экономики не найден! Выключение...");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
 
-        this.auctionManager = new AuctionManager(this);
-        this.auctionManager.loadData();
+        this.logManager = new LogManager(this);
+        this.databaseManager = new DatabaseManager(this);
+        this.databaseManager.init();
+
+        ConfigMigrator.migrateLegacyData(this, databaseManager);
+
+        this.auctionManager = new AuctionManager(this, databaseManager, logManager);
+        this.auctionManager.loadDataAsync();
 
         AuctionCommand command = new AuctionCommand(this);
         if (getCommand("ah") != null) {
@@ -46,24 +63,33 @@ public final class NGVKauction extends JavaPlugin {
             getCommand("ah").setTabCompleter(command);
         }
 
-        getServer().getPluginManager().registerEvents(new AuctionGUI(this), this);
         getServer().getPluginManager().registerEvents(new GUIListener(this), this);
+
+        long checkIntervalTicks = getConfig().getLong("settings.expiration-check-interval-seconds", 30L) * 20L;
+        this.expirationTask = Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+            if (auctionManager != null) {
+                auctionManager.checkExpirations();
+            }
+        }, checkIntervalTicks, checkIntervalTicks);
     }
 
     @Override
     public void onDisable() {
-        if (auctionManager != null) {
-            auctionManager.saveData();
+        if (expirationTask != null && !expirationTask.isCancelled()) {
+            expirationTask.cancel();
+        }
+        if (databaseManager != null) {
+            databaseManager.close();
         }
     }
 
     private void createCustomConfigs() {
-        messagesFile = new File(getDataFolder(), "messages.yml");
-        if (!messagesFile.exists()) {
-            messagesFile.getParentFile().mkdirs();
-            saveResource("messages.yml", false);
+        langFile = new File(getDataFolder(), "lang.yml");
+        if (!langFile.exists()) {
+            langFile.getParentFile().mkdirs();
+            saveResource("lang.yml", false);
         }
-        messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
+        langConfig = YamlConfiguration.loadConfiguration(langFile);
 
         guisFile = new File(getDataFolder(), "guis.yml");
         if (!guisFile.exists()) {
@@ -75,26 +101,38 @@ public final class NGVKauction extends JavaPlugin {
 
     public void reloadAllConfigs() {
         reloadConfig();
-        messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
+        ConfigMigrator.migrateConfigs(this);
+        langConfig = YamlConfiguration.loadConfiguration(langFile);
         guisConfig = YamlConfiguration.loadConfiguration(guisFile);
     }
 
-    private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) return false;
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) return false;
-        econ = rsp.getProvider();
-        return econ != null;
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
     }
 
-    public AuctionManager getAuctionManager() { return auctionManager; }
-    public Economy getEconomy() { return econ; }
-    public FileConfiguration getMessagesConfig() { return messagesConfig; }
-    public FileConfiguration getGuisConfig() { return guisConfig; }
+    public EconomyManager getEconomyManager() {
+        return economyManager;
+    }
+
+    public LogManager getLogManager() {
+        return logManager;
+    }
+
+    public AuctionManager getAuctionManager() {
+        return auctionManager;
+    }
+
+    public FileConfiguration getLangConfig() {
+        return langConfig;
+    }
+
+    public FileConfiguration getGuisConfig() {
+        return guisConfig;
+    }
 
     public String getMsg(String path) {
         String prefix = getConfig().getString("settings.prefix", "");
-        String msg = messagesConfig.getString("messages." + path, "");
+        String msg = langConfig.getString("messages." + path, "");
         return color(prefix + msg);
     }
 
@@ -103,9 +141,11 @@ public final class NGVKauction extends JavaPlugin {
     }
 
     public static String color(String text) {
-        if (text == null) return "";
-        Matcher matcher = Pattern.compile("&#([A-Fa-f0-9]{6})").matcher(text);
-        StringBuffer sb = new StringBuffer();
+        if (text == null || text.isEmpty()) {
+            return "";
+        }
+        Matcher matcher = HEX_PATTERN.matcher(text);
+        StringBuilder sb = new StringBuilder();
         while (matcher.find()) {
             String hex = matcher.group(1);
             matcher.appendReplacement(sb, ChatColor.of("#" + hex).toString());
@@ -115,7 +155,9 @@ public final class NGVKauction extends JavaPlugin {
     }
 
     public void playCfgSound(Player player, String soundPath, float pitch) {
-        if (!getConfig().getBoolean("sounds.enabled", true)) return;
+        if (!getConfig().getBoolean("sounds.enabled", true)) {
+            return;
+        }
         try {
             String soundName = getConfig().getString("sounds." + soundPath);
             if (soundName != null && !soundName.isEmpty()) {

@@ -19,7 +19,9 @@ public class LogManager {
     public LogManager(NGVKauction plugin) {
         this.plugin = plugin;
         File logsDir = new File(plugin.getDataFolder(), "logs");
-        if (!logsDir.exists()) logsDir.mkdirs();
+        if (!logsDir.exists()) {
+            logsDir.mkdirs();
+        }
         this.logFile = new File(logsDir, "auction.log");
     }
 
@@ -30,7 +32,7 @@ public class LogManager {
                 String timestamp = dtf.format(LocalDateTime.now());
                 pw.println("[" + timestamp + "] [" + action.toUpperCase() + "] " + details);
             } catch (IOException e) {
-                plugin.getLogger().severe(e.getMessage());
+                plugin.getLogger().severe("Ошибка записи лога: " + e.getMessage());
             }
         });
     }

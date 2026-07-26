@@ -12,8 +12,8 @@ import java.util.UUID;
 public class EconomyManager {
 
     private final NGVKauction plugin;
-    private Economy vaultEconomy = null;
-    private Object playerPointsAPI = null;
+    private Economy vaultEconomy;
+    private Object playerPointsAPI;
 
     public EconomyManager(NGVKauction plugin) {
         this.plugin = plugin;
@@ -38,6 +38,10 @@ public class EconomyManager {
                 this.playerPointsAPI = ppClass.getMethod("getAPI").invoke(ppInstance);
             } catch (Exception ignored) {}
         }
+    }
+
+    public boolean hasValidEconomy() {
+        return vaultEconomy != null;
     }
 
     public boolean has(Player player, double amount, String currency) {
@@ -77,7 +81,7 @@ public class EconomyManager {
                 Method giveMethod = playerPointsAPI.getClass().getMethod("give", UUID.class, int.class);
                 giveMethod.invoke(playerPointsAPI, playerUuid, (int) amount);
             } catch (Exception e) {
-                plugin.getLogger().severe(e.getMessage());
+                plugin.getLogger().severe("Ошибка выдачи PlayerPoints: " + e.getMessage());
             }
         } else if (vaultEconomy != null) {
             vaultEconomy.depositPlayer(Bukkit.getOfflinePlayer(playerUuid), amount);

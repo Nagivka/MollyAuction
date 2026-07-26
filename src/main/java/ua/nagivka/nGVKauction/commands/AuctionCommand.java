@@ -10,27 +10,29 @@ import org.bukkit.inventory.ItemStack;
 import ua.nagivka.nGVKauction.NGVKauction;
 import ua.nagivka.nGVKauction.menus.AuctionGUI;
 import ua.nagivka.nGVKauction.models.AuctionItem;
+import ua.nagivka.nGVKauction.models.Category;
+import ua.nagivka.nGVKauction.models.SortMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AuctionCommand implements CommandExecutor, TabCompleter {
+
     private final NGVKauction plugin;
 
-    public AuctionCommand(NGVKauction plugin) { this.plugin = plugin; }
+    public AuctionCommand(NGVKauction plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             if (args.length > 0 && args[0].equalsIgnoreCase("reload")) {
                 plugin.reloadAllConfigs();
                 sender.sendMessage("Конфигурация успешно перезагружена!");
             }
             return true;
         }
-
-        Player player = (Player) sender;
-        plugin.getAuctionManager().checkExpirations();
 
         if (args.length == 0) {
             if (!player.hasPermission("ngvkauctions.use")) {
@@ -50,7 +52,7 @@ public class AuctionCommand implements CommandExecutor, TabCompleter {
             }
 
             ItemStack handItem = player.getInventory().getItemInMainHand();
-            if (handItem == null || handItem.getType() == Material.AIR) {
+            if (handItem.getType() == Material.AIR) {
                 player.sendMessage(plugin.getMsg("item-in-hand"));
                 return true;
             }
@@ -137,7 +139,7 @@ public class AuctionCommand implements CommandExecutor, TabCompleter {
             }
 
             String query = args[1];
-            AuctionGUI.openMainMenuFiltered(player, plugin, 0, query);
+            AuctionGUI.openMainMenuFiltered(player, plugin, 0, Category.ALL, SortMode.NEWEST, query);
             return true;
         }
 
@@ -176,10 +178,9 @@ public class AuctionCommand implements CommandExecutor, TabCompleter {
             comp.add("1000");
             comp.add("50000");
         } else if (args.length == 3 && args[0].equalsIgnoreCase("sell")) {
-            if (sender instanceof Player) {
-                Player p = (Player) sender;
+            if (sender instanceof Player p) {
                 ItemStack item = p.getInventory().getItemInMainHand();
-                if (item != null && item.getType() != Material.AIR) {
+                if (item.getType() != Material.AIR) {
                     comp.add(String.valueOf(item.getAmount()));
                 }
             }

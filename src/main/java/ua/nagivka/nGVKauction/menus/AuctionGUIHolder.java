@@ -2,28 +2,62 @@ package ua.nagivka.nGVKauction.menus;
 
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import ua.nagivka.nGVKauction.models.AuctionItem;
+import ua.nagivka.nGVKauction.models.Category;
+import ua.nagivka.nGVKauction.models.SortMode;
 
 public class AuctionGUIHolder implements InventoryHolder {
-    private final String guiType; // MAIN, CONFIRM, PROFILE
-    private int page = 0;
-    private String category = "ALL";
-    private String sort = "NEWEST";
-    private String search = "";
 
-    public AuctionGUIHolder(String guiType) {
-        this.guiType = guiType;
+    public enum MenuType {
+        MAIN, MY_ITEMS, CONFIRM, STORAGE
     }
 
-    public String getGuiType() { return guiType; }
-    public int getPage() { return page; }
-    public void setPage(int page) { this.page = page; }
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
-    public String getSort() { return sort; }
-    public void setSort(String sort) { this.sort = sort; }
-    public String getSearch() { return search; }
-    public void setSearch(String search) { this.search = search; }
+    private final MenuType menuType;
+    private final int page;
+    private final Category category;
+    private final SortMode sortMode;
+    private final String searchQuery;
+    private final AuctionItem pendingItem;
+
+    public AuctionGUIHolder(MenuType menuType, int page) {
+        this(menuType, page, Category.ALL, SortMode.NEWEST, null, null);
+    }
+
+    public AuctionGUIHolder(MenuType menuType, int page, Category category, SortMode sortMode, String searchQuery, AuctionItem pendingItem) {
+        this.menuType = menuType;
+        this.page = page;
+        this.category = category;
+        this.sortMode = sortMode;
+        this.searchQuery = searchQuery;
+        this.pendingItem = pendingItem;
+    }
+
+    public MenuType getMenuType() {
+        return menuType;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public SortMode getSortMode() {
+        return sortMode;
+    }
+
+    public String getSearchQuery() {
+        return searchQuery;
+    }
+
+    public AuctionItem getPendingItem() {
+        return pendingItem;
+    }
 
     @Override
-    public Inventory getInventory() { return null; }
+    public Inventory getInventory() {
+        return null;
+    }
 }

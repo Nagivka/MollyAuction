@@ -2,6 +2,8 @@
 #          NGVKauction | Основная конфигурация              #
 # ======================================================== #
 
+config-version: '1.1'
+
 settings:
   prefix: '&#cfa151[Аукцион] &r'
   min-price: 10.0
@@ -9,6 +11,7 @@ settings:
   default-slots: 3
   expire-hours: 48
   tax-rate: 5.0 # Процент комиссии с успешной продажи
+  expiration-check-interval-seconds: 30
 
 database:
   type: 'SQLITE' # Варианты: SQLITE, MYSQL, MARIADB
@@ -17,6 +20,7 @@ database:
   database: 'minecraft'
   username: 'root'
   password: ''
+  pool-size: 10
 
 sounds:
   enabled: true

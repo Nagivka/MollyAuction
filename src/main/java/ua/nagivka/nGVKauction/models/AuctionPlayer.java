@@ -16,11 +16,31 @@ public class AuctionPlayer {
         this.unclaimedMoney = unclaimedMoney;
     }
 
-    public UUID getUuid() { return uuid; }
-    public String getName() { return name; }
-    public boolean isBanned() { return banned; }
-    public void setBanned(boolean banned) { this.banned = banned; }
-    public double getUnclaimedMoney() { return unclaimedMoney; }
-    public void addUnclaimedMoney(double amount) { this.unclaimedMoney += amount; }
-    public void clearUnclaimedMoney() { this.unclaimedMoney = 0.0; }
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isBanned() {
+        return banned;
+    }
+
+    public void setBanned(boolean banned) {
+        this.banned = banned;
+    }
+
+    public double getUnclaimedMoney() {
+        return unclaimedMoney;
+    }
+
+    public void addUnclaimedMoney(double amount) {
+        this.unclaimedMoney += amount;
+    }
+
+    public void clearUnclaimedMoney() {
+        this.unclaimedMoney = 0.0;
+    }
 }

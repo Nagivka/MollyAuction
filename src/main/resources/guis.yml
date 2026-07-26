@@ -1,19 +1,16 @@
 # ======================================================== #
-#        NGVKauction | Продвинутая настройка GUI           #
+#        NGVKauction | Конфигурация интерфейсов GUI        #
 # ======================================================== #
 
 main-menu:
   title: '&#cfa151Аукцион &#82919c| &#abb5beСтр. %page%'
   size: 54
-
   item-slots: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]
-
   filler:
-    material: 'PAPER'
+    material: 'GRAY_STAINED_GLASS_PANE'
     custom-model-data: 0
     name: ' '
     slots: [36, 37, 38, 39, 40, 41, 42, 43, 44]
-
   buttons:
     category-filter:
       slot: 45
@@ -60,15 +57,12 @@ main-menu:
 my-items-menu:
   title: '&#668f64Мои товары &#82919c| &#abb5beСтр. %page%'
   size: 54
-
   item-slots: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44]
-
   filler:
-    material: 'PAPER'
+    material: 'GRAY_STAINED_GLASS_PANE'
     custom-model-data: 0
     name: ' '
     slots: [45, 46, 47, 48, 50, 51, 52, 53]
-
   buttons:
     back:
       slot: 49
@@ -81,15 +75,12 @@ my-items-menu:
 confirm-menu:
   title: '&#cfa151Подтверждение покупки'
   size: 27
-
   item-slots: [13]
-
   filler:
     material: 'BLACK_STAINED_GLASS_PANE'
     custom-model-data: 0
     name: ' '
     slots: [4, 22]
-
   buttons:
     confirm:
       slots: [0, 1, 2, 3, 9, 10, 11, 12, 18, 19, 20, 21]
@@ -109,9 +100,7 @@ confirm-menu:
 storage-menu:
   title: '&#c45a5aПросроченные предметы'
   size: 54
-
   item-slots: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44]
-
   buttons:
     back:
       slot: 49
