@@ -1,7 +1,7 @@
 name: NGVKauction
-version: '1.2'
+version: '1.0'
 main: ua.nagivka.nGVKauction.NGVKauction
-api-version: '1.20'
+api-version: '1.21'
 depend: [Vault]
 softdepend: [Oraxen, ItemsAdder, PlaceholderAPI]
 
