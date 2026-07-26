@@ -1,0 +1,19 @@
+name: NGVKauction
+version: '1.2'
+main: ua.nagivka.nGVKauction.NGVKauction
+api-version: '1.20'
+depend: [Vault]
+softdepend: [Oraxen, ItemsAdder, PlaceholderAPI]
+
+commands:
+  ah:
+    description: Главная команда аукциона
+    aliases: [auction]
+
+permissions:
+  ngvkauctions.use:
+    default: true
+  ngvkauctions.sell:
+    default: true
+  ngvkauctions.admin:
+    default: op

@@ -1,0 +1,122 @@
+# ======================================================== #
+#        NGVKauction | Продвинутая настройка GUI           #
+# ======================================================== #
+
+main-menu:
+  title: '&#cfa151Аукцион &#82919c| &#abb5beСтр. %page%'
+  size: 54
+
+  item-slots: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]
+
+  filler:
+    material: 'PAPER'
+    custom-model-data: 0
+    name: ' '
+    slots: [36, 37, 38, 39, 40, 41, 42, 43, 44]
+
+  buttons:
+    category-filter:
+      slot: 45
+      material: 'COMPASS'
+      custom-model-data: 0
+      name: '&#cfa151Категории'
+    sort-mode:
+      slot: 46
+      material: 'HOPPER'
+      custom-model-data: 0
+      name: '&#cfa151Сортировка'
+    prev-page:
+      slot: 48
+      material: 'ARROW'
+      custom-model-data: 0
+      name: '&#cfa151< Предыдущая страница'
+    refresh:
+      slot: 49
+      material: 'NETHER_STAR'
+      custom-model-data: 0
+      name: '&#dfb15bОбновить'
+      lore:
+        - '&#abb5beНажмите для обновления списка товаров'
+    next-page:
+      slot: 50
+      material: 'ARROW'
+      custom-model-data: 0
+      name: '&#cfa151Следующая страница >'
+    my-items:
+      slot: 52
+      material: 'CHEST'
+      custom-model-data: 0
+      name: '&#668f64Мои товары'
+      lore:
+        - '&#abb5beОткрыть управление вашими лотами'
+    storage:
+      slot: 53
+      material: 'ENDER_CHEST'
+      custom-model-data: 0
+      name: '&#c45a5aХранилище'
+      lore:
+        - '&#abb5beЗабрать просроченные предметы'
+
+my-items-menu:
+  title: '&#668f64Мои товары &#82919c| &#abb5beСтр. %page%'
+  size: 54
+
+  item-slots: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44]
+
+  filler:
+    material: 'PAPER'
+    custom-model-data: 0
+    name: ' '
+    slots: [45, 46, 47, 48, 50, 51, 52, 53]
+
+  buttons:
+    back:
+      slot: 49
+      material: 'ARROW'
+      custom-model-data: 0
+      name: '&#cfa151< Назад в меню'
+      lore:
+        - '&#abb5beВернуться на главное меню аукциона'
+
+confirm-menu:
+  title: '&#cfa151Подтверждение покупки'
+  size: 27
+
+  item-slots: [13]
+
+  filler:
+    material: 'BLACK_STAINED_GLASS_PANE'
+    custom-model-data: 0
+    name: ' '
+    slots: [4, 22]
+
+  buttons:
+    confirm:
+      slots: [0, 1, 2, 3, 9, 10, 11, 12, 18, 19, 20, 21]
+      material: 'LIME_STAINED_GLASS_PANE'
+      custom-model-data: 0
+      name: '&#668f64Подтвердить покупку'
+      lore:
+        - '&#abb5beНажмите для покупки этого предмета'
+    cancel:
+      slots: [5, 6, 7, 8, 14, 15, 16, 17, 23, 24, 25, 26]
+      material: 'RED_STAINED_GLASS_PANE'
+      custom-model-data: 0
+      name: '&#c45a5aОтмена'
+      lore:
+        - '&#abb5beВернуться к списку товаров'
+
+storage-menu:
+  title: '&#c45a5aПросроченные предметы'
+  size: 54
+
+  item-slots: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44]
+
+  buttons:
+    back:
+      slot: 49
+      material: 'ARROW'
+      custom-model-data: 0
+      name: '&#cfa151< Назад в меню'
+      lore:
+        - '&#abb5beВернуться на главное меню аукциона'

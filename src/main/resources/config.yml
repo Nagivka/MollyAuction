@@ -1,0 +1,33 @@
+# ======================================================== #
+#          NGVKauction | Основная конфигурация              #
+# ======================================================== #
+
+settings:
+  prefix: '&#cfa151[Аукцион] &r'
+  min-price: 10.0
+  max-price: 100000000.0
+  default-slots: 3
+  expire-hours: 48
+  tax-rate: 5.0 # Процент комиссии с успешной продажи
+
+database:
+  type: 'SQLITE' # Варианты: SQLITE, MYSQL, MARIADB
+  host: 'localhost'
+  port: 3306
+  database: 'minecraft'
+  username: 'root'
+  password: ''
+
+sounds:
+  enabled: true
+  open-menu: 'BLOCK_CHEST_OPEN'
+  click: 'UI_BUTTON_CLICK'
+  buy-success: 'ENTITY_PLAYER_LEVELUP'
+  receive-money: 'ENTITY_EXPERIENCE_ORB_PICKUP'
+  receive-item: 'ENTITY_ITEM_PICKUP'
+  error: 'ENTITY_VILLAGER_NO'
+
+blacklist:
+  - 'BEDROCK'
+  - 'BARRIER'
+  - 'COMMAND_BLOCK'
