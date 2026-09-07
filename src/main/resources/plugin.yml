@@ -2,13 +2,14 @@ name: MollyAuction
 version: '${version}'
 main: ua.nagivka.mollyauction.MollyAuction
 author: nagivka
-api-version: '1.21'
+api-version: '1.20'
 depend: [Vault]
 softdepend: [Oraxen, ItemsAdder, Nexo, PlaceholderAPI]
 
 libraries:
   - com.zaxxer:HikariCP:5.1.0
   - org.xerial:sqlite-jdbc:3.45.2.0
+  - net.kyori:adventure-text-minimessage:4.17.0
 
 commands:
   ah:

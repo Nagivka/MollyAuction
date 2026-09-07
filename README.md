@@ -1,6 +1,6 @@
 # 🏷️ MollyAuction
 
-Плагин аукциона для серверов Minecraft (**Paper / Purpur 1.21+**, Java 21).
+Плагин аукциона для серверов Minecraft (**Paper / Purpur 1.20+**, Java 17+).
 
 ## 📌 Зависимости
 - **Vault** (и плагин экономики) или **PlayerPoints**
