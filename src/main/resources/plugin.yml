@@ -1,6 +1,7 @@
-name: NGVKauction
-version: '1.1'
-main: ua.nagivka.nGVKauction.NGVKauction
+name: MollyAuction
+version: '${version}'
+main: ua.nagivka.mollyauction.MollyAuction
+author: nagivka
 api-version: '1.21'
 depend: [Vault]
 softdepend: [Oraxen, ItemsAdder, Nexo, PlaceholderAPI]
@@ -12,9 +13,19 @@ libraries:
 commands:
   ah:
     description: Главная команда аукциона
-    aliases: [auction]
+    aliases: [auction, mollyauction]
 
 permissions:
+  mollyauction.use:
+    description: Доступ к просмотру и покупке товаров на аукционе
+    default: true
+  mollyauction.sell:
+    description: Доступ к выставлению предметов на аукцион
+    default: true
+  mollyauction.admin:
+    description: Административные права аукциона
+    default: op
+  # Совместимость со старыми правами NGVKauction
   ngvkauctions.use:
     default: true
   ngvkauctions.sell:

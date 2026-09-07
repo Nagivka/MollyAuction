@@ -1,4 +1,4 @@
-package ua.nagivka.nGVKauction.models;
+package ua.nagivka.mollyauction.models;
 
 import java.util.UUID;
 

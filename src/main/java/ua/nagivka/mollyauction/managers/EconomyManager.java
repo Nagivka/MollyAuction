@@ -1,21 +1,22 @@
-package ua.nagivka.nGVKauction.managers;
+package ua.nagivka.mollyauction.managers;
 
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import ua.nagivka.nGVKauction.NGVKauction;
+import ua.nagivka.mollyauction.MollyAuction;
 
 import java.lang.reflect.Method;
 import java.util.UUID;
 
 public class EconomyManager {
 
-    private final NGVKauction plugin;
+    private final MollyAuction plugin;
     private Economy vaultEconomy;
     private Object playerPointsAPI;
 
-    public EconomyManager(NGVKauction plugin) {
+    public EconomyManager(MollyAuction plugin) {
         this.plugin = plugin;
         setupVault();
         setupPlayerPoints();
@@ -69,22 +70,26 @@ public class EconomyManager {
             }
         }
         if (vaultEconomy != null) {
-            return vaultEconomy.withdrawPlayer(player, amount).transactionSuccess();
+            EconomyResponse response = vaultEconomy.withdrawPlayer(player, amount);
+            return response != null && response.transactionSuccess();
         }
         return false;
     }
 
-    public void deposit(UUID playerUuid, double amount, String currency) {
+    public boolean deposit(UUID playerUuid, double amount, String currency) {
         if ("PLAYER_POINTS".equalsIgnoreCase(currency)) {
-            if (playerPointsAPI == null) return;
+            if (playerPointsAPI == null) return false;
             try {
                 Method giveMethod = playerPointsAPI.getClass().getMethod("give", UUID.class, int.class);
-                giveMethod.invoke(playerPointsAPI, playerUuid, (int) amount);
+                return (boolean) giveMethod.invoke(playerPointsAPI, playerUuid, (int) amount);
             } catch (Exception e) {
-                plugin.getLogger().severe("Ошибка выдачи PlayerPoints: " + e.getMessage());
+                plugin.getLogger().severe("Ошибка начисления PlayerPoints: " + e.getMessage());
+                return false;
             }
         } else if (vaultEconomy != null) {
-            vaultEconomy.depositPlayer(Bukkit.getOfflinePlayer(playerUuid), amount);
+            EconomyResponse response = vaultEconomy.depositPlayer(Bukkit.getOfflinePlayer(playerUuid), amount);
+            return response != null && response.transactionSuccess();
         }
+        return false;
     }
 }

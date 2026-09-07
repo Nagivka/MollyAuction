@@ -1,8 +1,9 @@
 # ======================================================== #
-#          NGVKauction | Основная конфигурация              #
+#          MollyAuction | Основная конфигурация            #
+#          Автор: nagivka                                  #
 # ======================================================== #
 
-config-version: '1.1'
+config-version: '1.2'
 
 settings:
   prefix: '&#cfa151[Аукцион] &r'
@@ -12,6 +13,20 @@ settings:
   expire-hours: 48
   tax-rate: 5.0 # Процент комиссии с успешной продажи
   expiration-check-interval-seconds: 30
+  
+  # Комиссия за сам факт выставления лота на аукцион
+  listing-fee:
+    enabled: true
+    percent: 1.0 # Процент от цены выставления (например, 1% от $1000 = $10)
+    fixed: 0.0   # Либо фиксированная сумма (будет прибавлена к проценту)
+
+  # Стоимость продления лота (0.0 = бесплатно)
+  prolong-fee: 0.0
+
+  # Авто-обновление открытого меню в реальном времени (без мерцания и щелчков)
+  auto-refresh:
+    enabled: true
+    interval-seconds: 5
 
 database:
   type: 'SQLITE' # Варианты: SQLITE, MYSQL, MARIADB
@@ -20,7 +35,7 @@ database:
   database: 'minecraft'
   username: 'root'
   password: ''
-  pool-size: 10
+  pool-size: 10 # Для MySQL/MariaDB (для SQLite автоматически равен 1)
 
 sounds:
   enabled: true
@@ -31,7 +46,21 @@ sounds:
   receive-item: 'ENTITY_ITEM_PICKUP'
   error: 'ENTITY_VILLAGER_NO'
 
+# Расширенный черный список предметов
 blacklist:
-  - 'BEDROCK'
-  - 'BARRIER'
-  - 'COMMAND_BLOCK'
+  materials:
+    - 'BEDROCK'
+    - 'BARRIER'
+    - 'COMMAND_BLOCK'
+    - 'CHAIN_COMMAND_BLOCK'
+    - 'REPEATING_COMMAND_BLOCK'
+    - 'STRUCTURE_BLOCK'
+    - 'JIGSAW'
+    - 'LIGHT'
+  name-contains:
+    - '[Запрещено]'
+  lore-contains:
+    - 'Нельзя передавать'
+    - 'Персональный предмет'
+    - 'Квестовый предмет'
+  custom-model-data: []

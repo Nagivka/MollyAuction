@@ -1,4 +1,4 @@
-package ua.nagivka.nGVKauction.models;
+package ua.nagivka.mollyauction.models;
 
 public enum Category {
     ALL("Все"),
@@ -15,6 +15,8 @@ public enum Category {
     JEWELRY("Ювелирные"),
     UNIQUE("Уникальные");
 
+    private static final Category[] VALUES = values();
+
     private final String name;
 
     Category(String name) {
@@ -26,12 +28,10 @@ public enum Category {
     }
 
     public Category next() {
-        Category[] values = values();
-        return values[(ordinal() + 1) % values.length];
+        return VALUES[(ordinal() + 1) % VALUES.length];
     }
 
     public Category previous() {
-        Category[] values = values();
-        return values[(ordinal() - 1 + values.length) % values.length];
+        return VALUES[(ordinal() - 1 + VALUES.length) % VALUES.length];
     }
 }

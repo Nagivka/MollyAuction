@@ -1,4 +1,4 @@
-package ua.nagivka.nGVKauction.models;
+package ua.nagivka.mollyauction.models;
 
 import org.bukkit.inventory.ItemStack;
 
@@ -88,6 +88,18 @@ public class AuctionItem {
 
     public String getCategory() {
         return category;
+    }
+
+    public AuctionItem withReducedAmount(int amountBought, double priceDeducted) {
+        ItemStack newItem = item.clone();
+        int newAmount = Math.max(1, newItem.getAmount() - amountBought);
+        newItem.setAmount(newAmount);
+        double newPrice = Math.max(0.01, price - priceDeducted);
+        return new AuctionItem(id, sellerUuid, sellerName, newItem, newPrice, createdAt, expireTime, currencyType, category);
+    }
+
+    public AuctionItem withNewExpireTime(long newExpireTime) {
+        return new AuctionItem(id, sellerUuid, sellerName, item, price, createdAt, newExpireTime, currencyType, category);
     }
 
     @Override

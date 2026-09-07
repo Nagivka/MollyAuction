@@ -1,5 +1,6 @@
 # ======================================================== #
-#        NGVKauction | Конфигурация интерфейсов GUI        #
+#        MollyAuction | Конфигурация интерфейсов GUI       #
+#        Автор: nagivka                                    #
 # ======================================================== #
 
 main-menu:
@@ -10,7 +11,7 @@ main-menu:
     material: 'GRAY_STAINED_GLASS_PANE'
     custom-model-data: 0
     name: ' '
-    slots: [36, 37, 38, 39, 40, 41, 42, 43, 44]
+    slots: [36, 37, 38, 39, 40, 41, 42, 43, 44, 51]
   buttons:
     category-filter:
       slot: 45
@@ -22,6 +23,13 @@ main-menu:
       material: 'HOPPER'
       custom-model-data: 0
       name: '&#cfa151Сортировка'
+    history:
+      slot: 47
+      material: 'BOOK'
+      custom-model-data: 0
+      name: '&#cfa151История сделок'
+      lore:
+        - '&#abb5beПосмотреть последние покупки и продажи'
     prev-page:
       slot: 48
       material: 'ARROW'
@@ -62,8 +70,13 @@ my-items-menu:
     material: 'GRAY_STAINED_GLASS_PANE'
     custom-model-data: 0
     name: ' '
-    slots: [45, 46, 47, 48, 50, 51, 52, 53]
+    slots: [45, 46, 47, 51, 52, 53]
   buttons:
+    prev-page:
+      slot: 48
+      material: 'ARROW'
+      custom-model-data: 0
+      name: '&#cfa151< Предыдущая страница'
     back:
       slot: 49
       material: 'ARROW'
@@ -71,6 +84,11 @@ my-items-menu:
       name: '&#cfa151< Назад в меню'
       lore:
         - '&#abb5beВернуться на главное меню аукциона'
+    next-page:
+      slot: 50
+      material: 'ARROW'
+      custom-model-data: 0
+      name: '&#cfa151Следующая страница >'
 
 confirm-menu:
   title: '&#cfa151Подтверждение покупки'
@@ -97,11 +115,76 @@ confirm-menu:
       lore:
         - '&#abb5beВернуться к списку товаров'
 
+buy-partial-menu:
+  title: '&#cfa151Покупка части товара'
+  size: 27
+  item-slots: [13]
+  filler:
+    material: 'GRAY_STAINED_GLASS_PANE'
+    custom-model-data: 0
+    name: ' '
+    slots: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 19, 20, 21, 23, 24, 25, 26]
+  buttons:
+    minus-ten:
+      slot: 10
+      material: 'RED_CONCRETE'
+      custom-model-data: 0
+      name: '&#c45a5a-10 шт.'
+    minus-one:
+      slot: 11
+      material: 'RED_DYE'
+      custom-model-data: 0
+      name: '&#c45a5a-1 шт.'
+    plus-one:
+      slot: 15
+      material: 'LIME_DYE'
+      custom-model-data: 0
+      name: '&#668f64+1 шт.'
+    plus-ten:
+      slot: 16
+      material: 'LIME_CONCRETE'
+      custom-model-data: 0
+      name: '&#668f64+10 шт.'
+    confirm:
+      slot: 22
+      material: 'EMERALD'
+      custom-model-data: 0
+      name: '&#668f64Купить выбранное (%amount% шт.)'
+      lore:
+        - '&#82919c• &#abb5beЦена за шт: &#dfb15b$%unit_price%'
+        - '&#82919c• &#abb5beИтого к оплате: &#dfb15b$%total_price%'
+        - ''
+        - '&#668f64Нажмите для совершения покупки'
+    cancel:
+      slot: 18
+      material: 'BARRIER'
+      custom-model-data: 0
+      name: '&#c45a5aОтмена'
+      lore:
+        - '&#abb5beВернуться в главное меню'
+
 storage-menu:
-  title: '&#c45a5aПросроченные предметы'
+  title: '&#c45a5aПросроченные предметы &#82919c| &#abb5beСтр. %page%'
   size: 54
   item-slots: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44]
+  filler:
+    material: 'GRAY_STAINED_GLASS_PANE'
+    custom-model-data: 0
+    name: ' '
+    slots: [45, 46, 51, 52, 53]
   buttons:
+    collect-all:
+      slot: 47
+      material: 'HOPPER'
+      custom-model-data: 0
+      name: '&#668f64Забрать всё'
+      lore:
+        - '&#abb5beЗабрать все просроченные предметы в инвентарь'
+    prev-page:
+      slot: 48
+      material: 'ARROW'
+      custom-model-data: 0
+      name: '&#cfa151< Предыдущая страница'
     back:
       slot: 49
       material: 'ARROW'
@@ -109,3 +192,36 @@ storage-menu:
       name: '&#cfa151< Назад в меню'
       lore:
         - '&#abb5beВернуться на главное меню аукциона'
+    next-page:
+      slot: 50
+      material: 'ARROW'
+      custom-model-data: 0
+      name: '&#cfa151Следующая страница >'
+
+history-menu:
+  title: '&#cfa151История сделок &#82919c| &#abb5beСтр. %page%'
+  size: 54
+  item-slots: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44]
+  filler:
+    material: 'GRAY_STAINED_GLASS_PANE'
+    custom-model-data: 0
+    name: ' '
+    slots: [45, 46, 47, 51, 52, 53]
+  buttons:
+    prev-page:
+      slot: 48
+      material: 'ARROW'
+      custom-model-data: 0
+      name: '&#cfa151< Предыдущая страница'
+    back:
+      slot: 49
+      material: 'ARROW'
+      custom-model-data: 0
+      name: '&#cfa151< Назад в меню'
+      lore:
+        - '&#abb5beВернуться на главное меню аукциона'
+    next-page:
+      slot: 50
+      material: 'ARROW'
+      custom-model-data: 0
+      name: '&#cfa151Следующая страница >'

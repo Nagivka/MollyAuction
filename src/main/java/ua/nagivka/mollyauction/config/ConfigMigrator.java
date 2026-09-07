@@ -1,17 +1,17 @@
-package ua.nagivka.nGVKauction.config;
+package ua.nagivka.mollyauction.config;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
-import ua.nagivka.nGVKauction.NGVKauction;
-import ua.nagivka.nGVKauction.database.DatabaseManager;
-import ua.nagivka.nGVKauction.models.AuctionItem;
+import ua.nagivka.mollyauction.MollyAuction;
+import ua.nagivka.mollyauction.database.DatabaseManager;
+import ua.nagivka.mollyauction.models.AuctionItem;
+import ua.nagivka.mollyauction.models.ExpiredItem;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -19,11 +19,11 @@ import java.util.concurrent.CompletableFuture;
 
 public final class ConfigMigrator {
 
-    private static final String TARGET_VERSION = "1.1";
+    private static final String TARGET_VERSION = "1.2";
 
     private ConfigMigrator() {}
 
-    public static void migrateConfigs(NGVKauction plugin) {
+    public static void migrateConfigs(MollyAuction plugin) {
         File dataFolder = plugin.getDataFolder();
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
@@ -33,7 +33,7 @@ public final class ConfigMigrator {
         migrateMainConfig(plugin, dataFolder);
     }
 
-    public static void migrateLegacyData(NGVKauction plugin, DatabaseManager databaseManager) {
+    public static void migrateLegacyData(MollyAuction plugin, DatabaseManager databaseManager) {
         File dataFile = new File(plugin.getDataFolder(), "data.yml");
         if (!dataFile.exists()) {
             return;
@@ -66,7 +66,7 @@ public final class ConfigMigrator {
                         for (String b64 : base64List) {
                             ItemStack stack = AuctionItem.itemFromBase64(b64);
                             if (stack != null) {
-                                databaseManager.saveExpiredItemAsync(uuid, stack);
+                                databaseManager.saveExpiredItemAsync(new ExpiredItem(uuid, stack));
                             }
                         }
                     } catch (Exception ignored) {}
@@ -83,7 +83,7 @@ public final class ConfigMigrator {
         });
     }
 
-    private static void migrateMessagesToLang(NGVKauction plugin, File dataFolder) {
+    private static void migrateMessagesToLang(MollyAuction plugin, File dataFolder) {
         File oldMessagesFile = new File(dataFolder, "messages.yml");
         File newLangFile = new File(dataFolder, "lang.yml");
 
@@ -97,7 +97,7 @@ public final class ConfigMigrator {
         }
     }
 
-    private static void migrateMainConfig(NGVKauction plugin, File dataFolder) {
+    private static void migrateMainConfig(MollyAuction plugin, File dataFolder) {
         File configFile = new File(dataFolder, "config.yml");
         if (!configFile.exists()) {
             return;
@@ -114,13 +114,8 @@ public final class ConfigMigrator {
 
         boolean modified = false;
 
-        if (!cfg.contains("config-version")) {
-            cfg.set("config-version", TARGET_VERSION);
-            modified = true;
-        } else {
-            cfg.set("config-version", TARGET_VERSION);
-            modified = true;
-        }
+        cfg.set("config-version", TARGET_VERSION);
+        modified = true;
 
         if (!cfg.contains("settings.expiration-check-interval-seconds")) {
             cfg.set("settings.expiration-check-interval-seconds", 30);

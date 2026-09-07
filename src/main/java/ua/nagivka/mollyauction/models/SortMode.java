@@ -1,4 +1,4 @@
-package ua.nagivka.nGVKauction.models;
+package ua.nagivka.mollyauction.models;
 
 public enum SortMode {
     DEFAULT("По умолчанию"),
@@ -8,6 +8,8 @@ public enum SortMode {
     CHEAPEST("Дешёвые"),
     EXPENSIVE_UNIT("Дорогие/шт"),
     CHEAPEST_UNIT("Дешёвые/шт");
+
+    private static final SortMode[] VALUES = values();
 
     private final String name;
 
@@ -20,12 +22,10 @@ public enum SortMode {
     }
 
     public SortMode next() {
-        SortMode[] values = values();
-        return values[(ordinal() + 1) % values.length];
+        return VALUES[(ordinal() + 1) % VALUES.length];
     }
 
     public SortMode previous() {
-        SortMode[] values = values();
-        return values[(ordinal() - 1 + values.length) % values.length];
+        return VALUES[(ordinal() - 1 + VALUES.length) % VALUES.length];
     }
 }
